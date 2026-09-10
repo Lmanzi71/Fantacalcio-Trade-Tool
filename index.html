@@ -536,7 +536,7 @@
   const teamName = document.getElementById(`team${side}Select`).value;
 
   // --- INIZIO CODICE STEMMI ---
-  const stemmiSquadre = {
+ const stemmiSquadre = {
     "mignottingamm forest": "mignottingham.jpeg",
     "royale equipe": "royale.jpeg",
     "cogito ergo sum": "cogito.jpeg",
@@ -549,6 +549,18 @@
     "bollitones": "bollitones.jpeg",
     "il calcio": "ilcalcio.jpeg"
   };
+
+  const imgElem = document.getElementById(`logo${side}`);
+  if (imgElem) {
+    // Trasforma il nome in minuscolo per evitare errori di battitura
+    const key = teamName ? teamName.toLowerCase().trim() : "";
+    if (stemmiSquadre[key]) {
+      imgElem.src = stemmiSquadre[key];
+      imgElem.style.display = 'block';
+    } else {
+      imgElem.style.display = 'none';
+    }
+  }
 
   const imgElem = document.getElementById(`logo${side}`);
   if (imgElem) {
