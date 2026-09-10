@@ -538,46 +538,28 @@
   // --- INIZIO CODICE STEMMI ---
  const stemmiSquadre = {
     "mignottingamm forest": "mignottingham.jpeg",
+    "mignottingham forest": "mignottingham.jpeg",
     "royale equipe": "royale.jpeg",
     "cogito ergo sum": "cogito.jpeg",
     "bouc d'hercule": "bouc.jpeg",
+    "bouc d’hercule": "bouc.jpeg",
     "temptation haaland": "temptation.jpeg",
     "herta baccaio": "herta.jpeg",
     "disparis snai germain": "disparis.jpeg",
-    "sparapizza fc": "sparapizza.jpeg",
     "sparapizza": "sparapizza.jpeg",
+    "sparapizza fc": "sparapizza.jpeg",
     "bollitones": "bollitones.jpeg",
     "il calcio": "ilcalcio.jpeg"
   };
 
   const imgElem = document.getElementById(`logo${side}`);
   if (imgElem) {
-    // Trasforma il nome in minuscolo per evitare errori di battitura
+    // Normalizza il nome rimuovendo spazi extra e convertendo in minuscolo
     const key = teamName ? teamName.toLowerCase().trim() : "";
+    
     if (stemmiSquadre[key]) {
-      imgElem.src = stemmiSquadre[key];
-      imgElem.style.display = 'block';
-    } else {
-      imgElem.style.display = 'none';
-    }
-  }
-
-  const imgElem = document.getElementById(`logo${side}`);
-  if (imgElem) {
-    // Trasforma il nome in minuscolo per evitare errori di battitura
-    const key = teamName ? teamName.toLowerCase().trim() : "";
-    if (stemmiSquadre[key]) {
-      imgElem.src = stemmiSquadre[key];
-      imgElem.style.display = 'block';
-    } else {
-      imgElem.style.display = 'none';
-    }
-  }
-
-  const imgElem = document.getElementById(`logo${side}`);
-  if (imgElem) {
-    if (stemmiSquadre[teamName]) {
-      imgElem.src = stemmiSquadre[teamName];
+      // Forza il ricaricamento del percorso corretto
+      imgElem.src = "./" + stemmiSquadre[key];
       imgElem.style.display = 'block';
     } else {
       imgElem.style.display = 'none';
