@@ -532,70 +532,69 @@
             });
         }
 
-      function loadTeamPlayers(side) {
-  const teamName = document.getElementById(`team${side}Select`).value;
+function loadTeamPlayers(side) {
+  const selectElem = document.getElementById(`team${side}Select`);
+  if (!selectElem) return;
+  
+  const teamName = selectElem.value;
 
-  // --- INIZIO CODICE STEMMI ---
-const stemmiSquadre = {
-    // Mignottingham Forest FC (tutte le varianti)
-    // Mignottingham Forest FC (in tutto minuscolo)
-    "mignottingham forest fc": "mignottingham.jpeg",
-    "mignottingamm forest fc": "mignottingham.jpeg",
-    "mignottingham forest": "mignottingham.jpeg",
-    "mignottingamm forest": "mignottingham.jpeg",
-    "mignottingham": "mignottingham.jpeg",
-    "mignottingamm": "mignottingham.jpeg",
-    
-    // Bouc d'hercule (tutti i tipi di apostrofo e spazi)
-    "bouc d hercule": "bouc.jpeg",
-    "Bouc D Hercule": "bouc.jpeg",
-    "bouc d’ hercule": "bouc.jpeg",
-    "bouc d' hercule": "bouc.jpeg",
-    "bouc": "bouc.jpeg",
-
-    // Royale Equipe (con e senza accento)
-    "royale èquipe": "royale.jpeg",
-    "royale équipe": "royale.jpeg",
-    "royale": "royale.jpeg",
-
-    // Altre squadre
-    "cogito ergo sum": "cogito.jpeg",
-    "temptation haaland": "temptation.jpeg",
-    "herta baccaio": "herta.jpeg",
-    "disparis snai germain": "disparis.jpeg",
-    "sparapizza": "sparapizza.jpeg",
-    "sparapizza fc": "sparapizza.jpeg",
-    "bollitones": "bollitones.jpeg",
-    "il calcio": "ilcalcio.jpeg"
-  };
-
+  // --- LOGICA STEMMI ULTRA-SICURA ---
   const imgElem = document.getElementById(`logo${side}`);
   if (imgElem) {
-    // Normalizza il testo rimuovendo caratteri speciali/spazi
-    const key = teamName ? teamName.toLowerCase().trim().replace(/\s+/g, ' ') : "";
-    
-    if (stemmiSquadre[key]) {
-      imgElem.src = "./" + stemmiSquadre[key];
+    const nameClean = teamName ? teamName.toLowerCase() : "";
+
+    let stemmaTrovato = "";
+
+    if (nameClean.includes("mignot")) {
+      stemmaTrovato = "mignottingham.jpeg";
+    } else if (nameClean.includes("royale")) {
+      stemmaTrovato = "royale.jpeg";
+    } else if (nameClean.includes("cogito")) {
+      stemmaTrovato = "cogito.jpeg";
+    } else if (nameClean.includes("bouc")) {
+      stemmaTrovato = "bouc.jpeg";
+    } else if (nameClean.includes("temptation") || nameClean.includes("haaland")) {
+      stemmaTrovato = "temptation.jpeg";
+    } else if (nameClean.includes("herta") || nameClean.includes("baccaio")) {
+      stemmaTrovato = "herta.jpeg";
+    } else if (nameClean.includes("disparis") || nameClean.includes("snai")) {
+      stemmaTrovato = "disparis.jpeg";
+    } else if (nameClean.includes("sparapizza")) {
+      stemmaTrovato = "sparapizza.jpeg";
+    } else if (nameClean.includes("bolliton")) {
+      stemmaTrovato = "bollitones.jpeg";
+    } else if (nameClean.includes("calcio")) {
+      stemmaTrovato = "ilcalcio.jpeg";
+    }
+
+    if (stemmaTrovato) {
+      imgElem.src = stemmaTrovato;
       imgElem.style.display = 'block';
     } else {
       imgElem.style.display = 'none';
     }
   }
-  // --- FINE CODICE STEMMI ---
 
+  // --- CARICAMENTO GIOCATORI DELLA ROSA ---
   const playerSelect = document.getElementById(`player${side}Select`);
+  if (!playerSelect) return;
+  
   playerSelect.innerHTML = '<option value="">-- Seleziona Giocatore --</option>';
 
-            if (teamName && rostersData[teamName]) {
-                rostersData[teamName].forEach((p, idx) => {
-                    const opt = document.createElement('option');
-                    opt.value = idx;
-                    const dot = roleDots[p.pos] || '';
-                    opt.innerText = `${dot} ${p.name} (${p.fvm} FVM)`;
-                    playerSelect.appendChild(opt);
-                });
-            }
-        }
+  if (side === 'A') selectedTradeA = [];
+  else selectedTradeB = [];
+  if (typeof renderTradeList === 'function') renderTradeList(side);
+
+  if (teamName && typeof rostersData !== 'undefined' && rostersData[teamName]) {
+    rostersData[teamName].forEach((p, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      const dot = (typeof roleDots !== 'undefined' && roleDots[p.pos]) ? roleDots[p.pos] : '';
+      opt.innerText = `${dot} ${p.name} (${p.fvm} FVM)`;
+      playerSelect.appendChild(opt);
+    });
+  }
+}
 
         function addTradePlayer(side) {
             const teamName = document.getElementById(`team${side}Select`).value;
