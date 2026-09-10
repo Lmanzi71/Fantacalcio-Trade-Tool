@@ -1,627 +1,143 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantacalcio - Rose & Tool Scambi</title>
-    <!-- Importazione Google Fonts: Inter per il testo e Outfit per i titoli -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #0b0f17;
-            --card-bg: #161b26;
-            --card-bg-hover: #1c2331;
-            --border-color: #262d3d;
-            --text-main: #f0f6fc;
-            --text-muted: #8b949e;
-            --accent-p: #e3b341;
-            --accent-d: #238636;
-            --accent-c: #1f6feb;
-            --accent-a: #da3633;
-            --primary: #2ea043;
-            --primary-glow: rgba(46, 160, 67, 0.15);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cenacolo Culturale Tool Scambi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #161b26;
+      --border-color: #262d3d;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --primary: #2ea043;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 24px 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    .header-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
 
-        header {
-            max-width: 1200px;
-            margin: 0 auto 28px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 18px 24px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
+    .team-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
 
-        h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-            letter-spacing: -0.02em;
-        }
+    .team-logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border-color);
+      display: none; /* Nascondi di default finché non c'è selezione */
+      background-color: #000;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-            background: linear-gradient(135deg, #ffffff 0%, #a5d6ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .team-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0;
+    }
 
-        select {
-            padding: 10px 14px;
-            border-radius: 8px;
-            background: #0d1117;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        select:hover, select:focus {
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.15);
-        }
-
-        .view-section {
-            display: none;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        /* --- STILI ROSE --- */
-        .controls-rosters {
-            margin-bottom: 24px;
-        }
-
-        .teams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 24px;
-        }
-
-        .team-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .team-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            border-color: #388bfd44;
-        }
-
-        .team-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .role-section {
-            margin-bottom: 18px;
-        }
-
-        .role-title {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        .role-P { background: rgba(227, 179, 65, 0.15); color: #f2cc60; border: 1px solid rgba(227, 179, 65, 0.3); }
-        .role-D { background: rgba(35, 134, 54, 0.15); color: #56d364; border: 1px solid rgba(35, 134, 54, 0.3); }
-        .role-C { background: rgba(31, 111, 235, 0.15); color: #58a6ff; border: 1px solid rgba(31, 111, 235, 0.3); }
-        .role-A { background: rgba(218, 54, 51, 0.15); color: #ff7b72; border: 1px solid rgba(218, 54, 51, 0.3); }
-
-        .player-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .player-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 7px 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 14px;
-            border-radius: 4px;
-            transition: background 0.15s ease;
-        }
-
-        .player-item:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .player-item:last-child {
-            border-bottom: none;
-        }
-
-        .player-fvm {
-            font-weight: 600;
-            color: #79c0ff;
-            font-size: 13px;
-        }
-
-        /* --- STILI TOOL SCAMBIO --- */
-        .trade-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        @media (max-width: 768px) {
-            .trade-container { grid-template-columns: 1fr; }
-        }
-
-        .trade-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .trade-box h2 {
-            margin-top: 0;
-            color: #fff;
-            font-size: 18px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-        }
-
-        .selector-group {
-            margin-bottom: 18px;
-        }
-
-        .selector-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .trade-list {
-            min-height: 140px;
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 18px;
-            background: #0d1117;
-        }
-
-        .trade-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            font-size: 14px;
-            animation: fadeIn 0.2s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn-remove {
-            background: rgba(218, 54, 51, 0.2);
-            color: #ff7b72;
-            border: 1px solid rgba(218, 54, 51, 0.4);
-            border-radius: 6px;
-            padding: 4px 10px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .btn-remove:hover {
-            background: var(--accent-a);
-            color: #fff;
-        }
-
-        .summary-bar {
-            margin-top: 24px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .summary-bar h3 {
-            margin-top: 0;
-            font-size: 18px;
-        }
-
-        .balance-status {
-            font-size: 15px;
-            font-weight: 600;
-            margin-top: 16px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            line-height: 1.5;
-        }
-
-        .status-valid { 
-            color: #56d364; 
-            background: rgba(63, 185, 80, 0.12); 
-            border: 1px solid rgba(35, 134, 54, 0.4); 
-        }
-        .status-invalid { 
-            color: #ff7b72; 
-            background: rgba(248, 81, 73, 0.12); 
-            border: 1px solid rgba(218, 54, 51, 0.4); 
-        }
-    </style>
+    select {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Fantacalcio Hub</h1>
-        <div>
-            <label for="viewSelector" style="font-size:13px; font-weight: 500; margin-right: 8px; color: var(--text-muted);">Modalità:</label>
-            <select id="viewSelector" onchange="switchView(this.value)">
-                <option value="rosters">📋 Consultazione Rose</option>
-                <option value="trade">🔄 Tool di Scambio</option>
-            </select>
-        </div>
-    </header>
+  <!-- TITOLO AGGIORNATO -->
+  <h1 class="header-title">Cenacolo Culturale Tool Scambi</h1>
 
-    <!-- SEZIONE 1: ROSE -->
-    <div id="rostersView" class="view-section active">
-        <div class="controls-rosters">
-            <select id="teamFilter" onchange="filterTeams()">
-                <option value="ALL">Tutte le Squadre</option>
-            </select>
-        </div>
-        <div class="teams-grid" id="teamsContainer"></div>
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    
+    <!-- SQUADRA A -->
+    <div style="flex: 1; min-width: 300px; background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+      <div class="team-header">
+        <img id="logoA" class="team-logo" src="" alt="Stemma Squadra A">
+        <h2 class="team-title" id="titleA">Squadra A</h2>
+      </div>
+
+      <label for="selectA" style="color: var(--text-muted); font-size: 0.9rem;">Seleziona Squadra A:</label>
+      <select id="selectA" onchange="updateTeam('A')">
+        <option value="" disabled selected>-- Seleziona una squadra --</option>
+        <option value="Mignottingamm forest" data-logo="mignottingham.jpg">Mignottingamm forest</option>
+        <option value="Royale equipe" data-logo="royale.jpg">Royale equipe</option>
+        <option value="Cogito ergo sum" data-logo="cogito.jpg">Cogito ergo sum</option>
+        <option value="Bouc d'hercule" data-logo="bouc.jpg">Bouc d'hercule</option>
+        <option value="Temptation Haaland" data-logo="temptation.jpg">Temptation Haaland</option>
+        <option value="Herta Baccaio" data-logo="herta.jpg">Herta Baccaio</option>
+        <option value="Disparis snai germain" data-logo="disparis.jpg">Disparis snai germain</option>
+        <option value="Sparapizza FC" data-logo="sparapizza.jpg">Sparapizza FC</option>
+        <option value="Bollitones" data-logo="bollitones.jpg">Bollitones</option>
+        <option value="Il Calcio" data-logo="ilcalcio.jpg">Il Calcio</option>
+      </select>
     </div>
 
-    <!-- SEZIONE 2: TOOL SCAMBIO -->
-    <div id="tradeView" class="view-section">
-        <div class="trade-container">
-            <!-- Squadra A -->
-            <div class="trade-box">
-                <h2>Squadra A</h2>
-                <div class="selector-group">
-                    <label>Seleziona Squadra A:</label>
-                    <select id="teamASelect" onchange="loadTeamPlayers('A')" style="width: 100%;"></select>
-                </div>
-                <div class="selector-group">
-                    <label>Aggiungi Giocatore di Squadra A nello scambio:</label>
-                    <select id="playerASelect" onchange="addTradePlayer('A')" style="width: 100%;">
-                        <option value="">-- Seleziona Giocatore --</option>
-                    </select>
-                </div>
-                <div class="trade-list" id="tradeListA">
-                    <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
-                </div>
-            </div>
+    <!-- SQUADRA B -->
+    <div style="flex: 1; min-width: 300px; background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+      <div class="team-header">
+        <img id="logoB" class="team-logo" src="" alt="Stemma Squadra B">
+        <h2 class="team-title" id="titleB">Squadra B</h2>
+      </div>
 
-            <!-- Squadra B -->
-            <div class="trade-box">
-                <h2>Squadra B</h2>
-                <div class="selector-group">
-                    <label>Seleziona Squadra B:</label>
-                    <select id="teamBSelect" onchange="loadTeamPlayers('B')" style="width: 100%;"></select>
-                </div>
-                <div class="selector-group">
-                    <label>Aggiungi Giocatore di Squadra B nello scambio:</label>
-                    <select id="playerBSelect" onchange="addTradePlayer('B')" style="width: 100%;">
-                        <option value="">-- Seleziona Giocatore --</option>
-                    </select>
-                </div>
-                <div class="trade-list" id="tradeListB">
-                    <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="summary-bar">
-            <h3>Riepilogo Scambio</h3>
-            <div style="display: flex; justify-content: space-around; margin-top: 12px; font-size: 15px;">
-                <div>Totale FVM Ceduto da A: <strong id="totalFVMA" style="color:#79c0ff;">0</strong></div>
-                <div>Totale FVM Ceduto da B: <strong id="totalFVMB" style="color:#79c0ff;">0</strong></div>
-            </div>
-            <div id="tradeBalance"></div>
-        </div>
+      <label for="selectB" style="color: var(--text-muted); font-size: 0.9rem;">Seleziona Squadra B:</label>
+      <select id="selectB" onchange="updateTeam('B')">
+        <option value="" disabled selected>-- Seleziona una squadra --</option>
+        <option value="Mignottingamm forest" data-logo="mignottingham.jpg">Mignottingamm forest</option>
+        <option value="Royale equipe" data-logo="royale.jpg">Royale equipe</option>
+        <option value="Cogito ergo sum" data-logo="cogito.jpg">Cogito ergo sum</option>
+        <option value="Bouc d'hercule" data-logo="bouc.jpg">Bouc d'hercule</option>
+        <option value="Temptation Haaland" data-logo="temptation.jpg">Temptation Haaland</option>
+        <option value="Herta Baccaio" data-logo="herta.jpg">Herta Baccaio</option>
+        <option value="Disparis snai germain" data-logo="disparis.jpg">Disparis snai germain</option>
+        <option value="Sparapizza FC" data-logo="sparapizza.jpg">Sparapizza FC</option>
+        <option value="Bollitones" data-logo="bollitones.jpg">Bollitones</option>
+        <option value="Il Calcio" data-logo="ilcalcio.jpg">Il Calcio</option>
+      </select>
     </div>
 
-    <script>
-        const rostersData = {
-          "Mignottingham Forest FC": [
-            {"name": "Svilar", "pos": "P", "fvm": 41}, {"name": "Falcone", "pos": "P", "fvm": 15}, {"name": "Stankovic F.", "pos": "P", "fvm": 3}, {"name": "Gollini", "pos": "P", "fvm": 1},
-            {"name": "Spence", "pos": "D", "fvm": 21}, {"name": "Pavlovic", "pos": "D", "fvm": 19}, {"name": "N'Dicka", "pos": "D", "fvm": 16}, {"name": "Ostigard", "pos": "D", "fvm": 11}, {"name": "Bracaglia", "pos": "D", "fvm": 3}, {"name": "Delprato", "pos": "D", "fvm": 3}, {"name": "Obrador", "pos": "D", "fvm": 1}, {"name": "Britschgi", "pos": "D", "fvm": 1}, {"name": "Holm", "pos": "D", "fvm": 1}, {"name": "Kolasinac", "pos": "D", "fvm": 1},
-            {"name": "McTominay", "pos": "C", "fvm": 54}, {"name": "Frattesi", "pos": "C", "fvm": 51}, {"name": "Koopmeiners", "pos": "C", "fvm": 8}, {"name": "Cacciamani", "pos": "C", "fvm": 6}, {"name": "Njie", "pos": "C", "fvm": 5}, {"name": "Milla", "pos": "C", "fvm": 4}, {"name": "Pisilli", "pos": "C", "fvm": 3},
-            {"name": "Ferguson", "pos": "A", "fvm": 3}, {"name": "Gaetano", "pos": "A", "fvm": 2}, {"name": "Winks", "pos": "A", "fvm": 1}, {"name": "Davis K.", "pos": "A", "fvm": 66}, {"name": "Pinamonti", "pos": "A", "fvm": 59}, {"name": "Beto", "pos": "A", "fvm": 30}, {"name": "Piccoli", "pos": "A", "fvm": 17}, {"name": "Esposito Se.", "pos": "A", "fvm": 16}, {"name": "Yeboah J.", "pos": "A", "fvm": 5}, {"name": "Romero D.", "pos": "A", "fvm": 3}
-          ],
-          "IL CALCIO": [
-            {"name": "Butez", "pos": "P", "fvm": 45}, {"name": "Palmisani", "pos": "P", "fvm": 1}, {"name": "Sanchez Ro.", "pos": "P", "fvm": 1},
-            {"name": "Ramon", "pos": "D", "fvm": 21}, {"name": "Akanji", "pos": "D", "fvm": 21}, {"name": "Solet", "pos": "D", "fvm": 17}, {"name": "Valle", "pos": "D", "fvm": 9}, {"name": "Jimenez A.", "pos": "D", "fvm": 8}, {"name": "Floriani Mussolini", "pos": "D", "fvm": 4}, {"name": "Theate", "pos": "D", "fvm": 1}, {"name": "Kossounou", "pos": "D", "fvm": 1}, {"name": "Ismajli", "pos": "D", "fvm": 1},
-            {"name": "Mastantuono", "pos": "C", "fvm": 32}, {"name": "De Bruyne", "pos": "C", "fvm": 30}, {"name": "Diouf", "pos": "C", "fvm": 24}, {"name": "Alajbegovic", "pos": "C", "fvm": 22}, {"name": "Jones C.", "pos": "C", "fvm": 20}, {"name": "Cissè A.", "pos": "C", "fvm": 12}, {"name": "Ndour", "pos": "C", "fvm": 1}, {"name": "Frendrup", "pos": "C", "fvm": 1}, {"name": "Mkhitaryan", "pos": "C", "fvm": 1},
-            {"name": "Hojlund", "pos": "A", "fvm": 200}, {"name": "Bonny", "pos": "A", "fvm": 4}, {"name": "Stulic", "pos": "A", "fvm": 2}, {"name": "Cutrone", "pos": "A", "fvm": 2}, {"name": "Kevin Carlos", "pos": "A", "fvm": 1}, {"name": "Giovane", "pos": "A", "fvm": 1}, {"name": "Mota", "pos": "A", "fvm": 1}
-          ],
-          "Cogito Ergo Sum": [
-            {"name": "Okoye", "pos": "P", "fvm": 15}, {"name": "Muric", "pos": "P", "fvm": 6}, {"name": "Turati", "pos": "P", "fvm": 1}, {"name": "Russo A.", "pos": "P", "fvm": 1},
-            {"name": "Bremer", "pos": "D", "fvm": 30}, {"name": "Bisseck", "pos": "D", "fvm": 22}, {"name": "Zappacosta", "pos": "D", "fvm": 7}, {"name": "Comuzzo", "pos": "D", "fvm": 5}, {"name": "Abankwah", "pos": "D", "fvm": 3}, {"name": "Gallo", "pos": "D", "fvm": 2}, {"name": "Spinazzola", "pos": "D", "fvm": 2}, {"name": "Coco", "pos": "D", "fvm": 1},
-            {"name": "Ekkelenkamp", "pos": "C", "fvm": 30}, {"name": "Gonzalez N.", "pos": "C", "fvm": 19}, {"name": "Zambo Anguissa", "pos": "C", "fvm": 10}, {"name": "Adzic", "pos": "C", "fvm": 9}, {"name": "Douglas Luiz", "pos": "C", "fvm": 8}, {"name": "Colpani", "pos": "C", "fvm": 4}, {"name": "Busio", "pos": "C", "fvm": 3}, {"name": "El Shaarawy", "pos": "C", "fvm": 2}, {"name": "Sarr P.", "pos": "C", "fvm": 1},
-            {"name": "Malen", "pos": "A", "fvm": 224}, {"name": "Woltemade", "pos": "A", "fvm": 62}, {"name": "Adams C.", "pos": "A", "fvm": 22}, {"name": "Zeballos", "pos": "A", "fvm": 1}, {"name": "Ghedjemis", "pos": "A", "fvm": 1}
-          ],
-          "Herta Baccaio": [
-            {"name": "Martinez Jo.", "pos": "P", "fvm": 44}, {"name": "Caprile", "pos": "P", "fvm": 11}, {"name": "Provedel", "pos": "P", "fvm": 4},
-            {"name": "Rrahmani", "pos": "D", "fvm": 17}, {"name": "Stones", "pos": "D", "fvm": 11}, {"name": "Scalvini", "pos": "D", "fvm": 6}, {"name": "Celik", "pos": "D", "fvm": 5}, {"name": "Valdepenas", "pos": "D", "fvm": 1}, {"name": "Kouadio", "pos": "D", "fvm": 1}, {"name": "Palma", "pos": "D", "fvm": 1}, {"name": "Marcandalli", "pos": "D", "fvm": 1}, {"name": "Gatti", "pos": "D", "fvm": 1}, {"name": "Badiashile", "pos": "D", "fvm": 1},
-            {"name": "Paz N.", "pos": "C", "fvm": 82}, {"name": "Conceicao", "pos": "C", "fvm": 55}, {"name": "Barella", "pos": "C", "fvm": 30}, {"name": "Konè M.", "pos": "C", "fvm": 16}, {"name": "Schmid", "pos": "C", "fvm": 1}, {"name": "Romano", "pos": "C", "fvm": 1}, {"name": "Miller L.", "pos": "C", "fvm": 1}, {"name": "Loftus-Cheek", "pos": "C", "fvm": 1},
-            {"name": "Ramos G.", "pos": "A", "fvm": 138}, {"name": "De Ketelaere", "pos": "A", "fvm": 25}, {"name": "Kvernadze", "pos": "A", "fvm": 20}, {"name": "Osmajic", "pos": "A", "fvm": 3}, {"name": "Camarda", "pos": "A", "fvm": 1}, {"name": "Nzola", "pos": "A", "fvm": 1}, {"name": "Boga", "pos": "A", "fvm": 1}
-          ],
-          "Bollitones": [
-            {"name": "Maignan", "pos": "P", "fvm": 44}, {"name": "Bijlow", "pos": "P", "fvm": 3}, {"name": "Torriani", "pos": "P", "fvm": 1}, {"name": "Terracciano", "pos": "P", "fvm": 1},
-            {"name": "Mancini", "pos": "D", "fvm": 24}, {"name": "Chalobah T.", "pos": "D", "fvm": 20}, {"name": "Molina N.", "pos": "D", "fvm": 13}, {"name": "Lucumì", "pos": "D", "fvm": 12}, {"name": "Miranda J.", "pos": "D", "fvm": 8}, {"name": "Belghali", "pos": "D", "fvm": 3}, {"name": "Joao Mario", "pos": "D", "fvm": 1}, {"name": "Idzes", "pos": "D", "fvm": 1}, {"name": "Ghilardi", "pos": "D", "fvm": 1}, {"name": "Obert", "pos": "D", "fvm": 1},
-            {"name": "Orsolini", "pos": "C", "fvm": 45}, {"name": "Politano", "pos": "C", "fvm": 10}, {"name": "Kessiè", "pos": "C", "fvm": 9}, {"name": "Taylor K.", "pos": "C", "fvm": 7}, {"name": "Calò", "pos": "C", "fvm": 5}, {"name": "Fazzini", "pos": "C", "fvm": 4}, {"name": "Odgaard", "pos": "C", "fvm": 4}, {"name": "Saelemaekers", "pos": "C", "fvm": 3}, {"name": "Rodriguez Je.", "pos": "C", "fvm": 1}, {"name": "Bakola", "pos": "C", "fvm": 1},
-            {"name": "Thuram", "pos": "A", "fvm": 154}, {"name": "Dybala", "pos": "A", "fvm": 70}, {"name": "Berardi", "pos": "A", "fvm": 47}, {"name": "Vitinha O.", "pos": "A", "fvm": 2}, {"name": "Gnonto", "pos": "A", "fvm": 1}, {"name": "Robinson J.", "pos": "A", "fvm": 1}
-          ],
-          "Bouc D Hercule": [
-            {"name": "Skorupski", "pos": "P", "fvm": 15}, {"name": "Corvi", "pos": "P", "fvm": 6}, {"name": "Milinkovic-Savic V.", "pos": "P", "fvm": 3}, {"name": "Daffara", "pos": "P", "fvm": 1}, {"name": "Pessina Mas.", "pos": "P", "fvm": 1},
-            {"name": "Tavares N.", "pos": "D", "fvm": 13}, {"name": "Mangas", "pos": "D", "fvm": 10}, {"name": "Lulli", "pos": "D", "fvm": 7}, {"name": "Carlos Augusto", "pos": "D", "fvm": 6}, {"name": "Bellanova", "pos": "D", "fvm": 6}, {"name": "Balerdi", "pos": "D", "fvm": 4}, {"name": "Pavard", "pos": "D", "fvm": 3}, {"name": "Buongiorno", "pos": "D", "fvm": 3}, {"name": "Bella-Kotchap", "pos": "D", "fvm": 1}, {"name": "Ehizibue", "pos": "D", "fvm": 1},
-            {"name": "Mora", "pos": "C", "fvm": 57}, {"name": "Rabiot", "pos": "C", "fvm": 42}, {"name": "Zaniolo", "pos": "C", "fvm": 29}, {"name": "Mandragora", "pos": "C", "fvm": 20}, {"name": "McKennie", "pos": "C", "fvm": 17}, {"name": "Bernabè", "pos": "C", "fvm": 7}, {"name": "Baldanzi", "pos": "C", "fvm": 7}, {"name": "Vergara", "pos": "C", "fvm": 6}, {"name": "Volpato", "pos": "C", "fvm": 3}, {"name": "Samardzic", "pos": "C", "fvm": 3},
-            {"name": "Scamacca", "pos": "A", "fvm": 64}, {"name": "Diao", "pos": "A", "fvm": 50}, {"name": "Yildiz", "pos": "A", "fvm": 44}, {"name": "Soulè", "pos": "A", "fvm": 43}, {"name": "Varela G.", "pos": "A", "fvm": 11}, {"name": "Colombo", "pos": "A", "fvm": 8}, {"name": "Mendy P.", "pos": "A", "fvm": 6}
-          ],
-          "TEMPTATION HAALAND": [
-            {"name": "Meret", "pos": "P", "fvm": 40}, {"name": "De Gea", "pos": "P", "fvm": 10}, {"name": "Christensen O.", "pos": "P", "fvm": 1},
-            {"name": "Dimarco", "pos": "D", "fvm": 57}, {"name": "Wesley", "pos": "D", "fvm": 40}, {"name": "Gila", "pos": "D", "fvm": 15}, {"name": "Cambiaso", "pos": "D", "fvm": 5}, {"name": "Diego Carlos", "pos": "D", "fvm": 2}, {"name": "Hien", "pos": "D", "fvm": 1}, {"name": "Gabbia", "pos": "D", "fvm": 1},
-            {"name": "Calhanoglu", "pos": "C", "fvm": 73}, {"name": "Zaccagni", "pos": "C", "fvm": 27}, {"name": "Vlasic", "pos": "C", "fvm": 22}, {"name": "Perrone", "pos": "C", "fvm": 8}, {"name": "Moreira", "pos": "C", "fvm": 7}, {"name": "Pasalic", "pos": "C", "fvm": 2}, {"name": "Isaksen", "pos": "C", "fvm": 1}, {"name": "Fagioli", "pos": "C", "fvm": 1}, {"name": "Cambiaghi", "pos": "C", "fvm": 1},
-            {"name": "Simeone", "pos": "A", "fvm": 50}, {"name": "Raimondo", "pos": "A", "fvm": 42}, {"name": "Pellegrino M.", "pos": "A", "fvm": 25}, {"name": "Dovbyk", "pos": "A", "fvm": 25}, {"name": "Neres", "pos": "A", "fvm": 4}, {"name": "Noslin", "pos": "A", "fvm": 1}
-          ],
-          "SPARAPIZZA FC": [
-            {"name": "Carnesecchi", "pos": "P", "fvm": 45}, {"name": "Tornqvist", "pos": "P", "fvm": 1}, {"name": "Thiam", "pos": "P", "fvm": 1}, {"name": "Sportiello", "pos": "P", "fvm": 1},
-            {"name": "Bastoni", "pos": "D", "fvm": 25}, {"name": "Di Lorenzo", "pos": "D", "fvm": 19}, {"name": "Vojvoda", "pos": "D", "fvm": 5}, {"name": "Bernasconi", "pos": "D", "fvm": 4}, {"name": "Valeri", "pos": "D", "fvm": 3}, {"name": "Tiago Gabriel", "pos": "D", "fvm": 2}, {"name": "Kristensen T.", "pos": "D", "fvm": 1}, {"name": "Mina", "pos": "D", "fvm": 1},
-            {"name": "Pulisic", "pos": "C", "fvm": 36}, {"name": "Atta", "pos": "C", "fvm": 26}, {"name": "Ederson D.S.", "pos": "C", "fvm": 16}, {"name": "Modric", "pos": "C", "fvm": 10}, {"name": "Fitz-Jim", "pos": "C", "fvm": 5}, {"name": "Mbangula", "pos": "C", "fvm": 1}, {"name": "Liberali", "pos": "C", "fvm": 1},
-            {"name": "Esposito F.P.", "pos": "A", "fvm": 66}, {"name": "Krstovic", "pos": "A", "fvm": 50}, {"name": "Laurientè", "pos": "A", "fvm": 50}, {"name": "Kolo Muani", "pos": "A", "fvm": 50}, {"name": "Raspadori", "pos": "A", "fvm": 20}, {"name": "Santos A.", "pos": "A", "fvm": 3}
-          ],
-          "royale èquipe": [
-            {"name": "Mandas", "pos": "P", "fvm": 28}, {"name": "Renzetti", "pos": "P", "fvm": 1}, {"name": "Motta", "pos": "P", "fvm": 1},
-            {"name": "Hermoso", "pos": "D", "fvm": 15}, {"name": "Doekhi", "pos": "D", "fvm": 4}, {"name": "Cinquegrano", "pos": "D", "fvm": 3}, {"name": "Hainaut", "pos": "D", "fvm": 3}, {"name": "Birindelli", "pos": "D", "fvm": 2}, {"name": "Haps", "pos": "D", "fvm": 2}, {"name": "Calvani", "pos": "D", "fvm": 1}, {"name": "Veiga D.", "pos": "D", "fvm": 1}, {"name": "Cittadini", "pos": "D", "fvm": 1},
-            {"name": "Da Cunha", "pos": "C", "fvm": 29}, {"name": "Zielinski", "pos": "C", "fvm": 29}, {"name": "Chukwueze", "pos": "C", "fvm": 16}, {"name": "Cristante", "pos": "C", "fvm": 8}, {"name": "Sucic P.", "pos": "C", "fvm": 5}, {"name": "Piotrowski", "pos": "C", "fvm": 1}, {"name": "Thorstvedt", "pos": "C", "fvm": 1}, {"name": "Musah", "pos": "C", "fvm": 1},
-            {"name": "Martinez L.", "pos": "A", "fvm": 221}, {"name": "Douvikas", "pos": "A", "fvm": 86}, {"name": "Maldini", "pos": "A", "fvm": 21}, {"name": "Adams A.", "pos": "A", "fvm": 6}, {"name": "Tourè E.", "pos": "A", "fvm": 3}, {"name": "Rrahmani Al.", "pos": "A", "fvm": 1}
-          ],
-          "DISPARIS SNAI GERMAIN": [
-            {"name": "Vicario", "pos": "P", "fvm": 46}, {"name": "Perri", "pos": "P", "fvm": 7}, {"name": "Grabara", "pos": "P", "fvm": 1},
-            {"name": "Kalulu", "pos": "D", "fvm": 25}, {"name": "Couto", "pos": "D", "fvm": 17}, {"name": "De Winter", "pos": "D", "fvm": 10}, {"name": "Kamara H.", "pos": "D", "fvm": 10}, {"name": "Doig", "pos": "D", "fvm": 5}, {"name": "Dragusin", "pos": "D", "fvm": 5}, {"name": "Rodriguez Ju.", "pos": "D", "fvm": 1}, {"name": "Vasquez", "pos": "D", "fvm": 1},
-            {"name": "Baturina", "pos": "C", "fvm": 78}, {"name": "Gudmundsson A.", "pos": "C", "fvm": 16}, {"name": "Bernardeschi", "pos": "C", "fvm": 16}, {"name": "Rowe", "pos": "C", "fvm": 15}, {"name": "Goncalves P.", "pos": "C", "fvm": 14}, {"name": "Lobotka", "pos": "C", "fvm": 3}, {"name": "Hutchinson", "pos": "C", "fvm": 1}, {"name": "Fernandez T.", "pos": "C", "fvm": 1}, {"name": "Zalewski", "pos": "C", "fvm": 1}, {"name": "Elmas", "pos": "C", "fvm": 1},
-            {"name": "Kean", "pos": "A", "fvm": 147}, {"name": "Castro S.", "pos": "A", "fvm": 21}, {"name": "Lucca", "pos": "A", "fvm": 16}, {"name": "Lontani", "pos": "A", "fvm": 12}, {"name": "Bowie", "pos": "A", "fvm": 7}, {"name": "Geubbels", "pos": "A", "fvm": 3}, {"name": "Lang", "pos": "A", "fvm": 2}
-          ]
-        };
+  </div>
 
-        const roleLabels = { 'P': 'Portieri', 'D': 'Difensori', 'C': 'Centrocampisti', 'A': 'Attaccanti' };
-        const roleDots = { 'P': '🟡', 'D': '🟢', 'C': '🔵', 'A': '🔴' };
+  <script>
+    function updateTeam(teamSide) {
+      const selectElement = document.getElementById('select' + teamSide);
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      
+      const logoImg = document.getElementById('logo' + teamSide);
+      const logoPath = selectedOption.getAttribute('data-logo');
 
-        let selectedTradeA = [];
-        let selectedTradeB = [];
-
-        function switchView(viewName) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            if (viewName === 'rosters') {
-                document.getElementById('rostersView').classList.add('active');
-            } else {
-                document.getElementById('tradeView').classList.add('active');
-            }
-        }
-
-        // --- ROSE LOGIC ---
-        function initRosterSelect() {
-            const select = document.getElementById('teamFilter');
-            Object.keys(rostersData).forEach(team => {
-                const opt = document.createElement('option');
-                opt.value = team;
-                opt.innerText = team;
-                select.appendChild(opt);
-            });
-        }
-
-        function renderRosters(selectedTeam = 'ALL') {
-            const container = document.getElementById('teamsContainer');
-            container.innerHTML = '';
-            const teamsToRender = selectedTeam === 'ALL' ? Object.keys(rostersData) : [selectedTeam];
-
-            teamsToRender.forEach(team => {
-                const players = rostersData[team];
-                const card = document.createElement('div');
-                card.className = 'team-card';
-                const totalCost = players.reduce((sum, p) => sum + p.fvm, 0);
-
-                let cardHTML = `<div class="team-title">
-                                    <span>${team}</span>
-                                    <span style="font-size:13px; font-weight: 500; color:var(--text-muted); font-family:'Inter',sans-serif;">${totalCost} FVM</span>
-                                </div>`;
-
-                ['P', 'D', 'C', 'A'].forEach(role => {
-                    const rolePlayers = players.filter(p => p.pos === role);
-                    if (rolePlayers.length > 0) {
-                        cardHTML += `
-                            <div class="role-section">
-                                <span class="role-title role-${role}">${roleLabels[role]} (${rolePlayers.length})</span>
-                                <ul class="player-list">
-                                    ${rolePlayers.map(p => `
-                                        <li class="player-item">
-                                            <span>${p.name}</span>
-                                            <span class="player-fvm">${p.fvm} FVM</span>
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                        `;
-                    }
-                });
-
-                card.innerHTML = cardHTML;
-                container.appendChild(card);
-            });
-        }
-
-        function filterTeams() {
-            renderRosters(document.getElementById('teamFilter').value);
-        }
-
-        // --- TRADE TOOL LOGIC ---
-        function initTradeSelects() {
-            const selectA = document.getElementById('teamASelect');
-            const selectB = document.getElementById('teamBSelect');
-            
-            selectA.innerHTML = '<option value="">-- Seleziona Squadra A --</option>';
-            selectB.innerHTML = '<option value="">-- Seleziona Squadra B --</option>';
-
-            Object.keys(rostersData).forEach(team => {
-                selectA.appendChild(new Option(team, team));
-                selectB.appendChild(new Option(team, team));
-            });
-        }
-
-        function loadTeamPlayers(side) {
-            const teamName = document.getElementById(`team${side}Select`).value;
-            const playerSelect = document.getElementById(`player${side}Select`);
-            playerSelect.innerHTML = '<option value="">-- Seleziona Giocatore --</option>';
-
-            if (side === 'A') selectedTradeA = [];
-            else selectedTradeB = [];
-            renderTradeList(side);
-
-            if (teamName && rostersData[teamName]) {
-                rostersData[teamName].forEach((p, idx) => {
-                    const opt = document.createElement('option');
-                    opt.value = idx;
-                    const dot = roleDots[p.pos] || '';
-                    opt.innerText = `${dot} ${p.name} (${p.fvm} FVM)`;
-                    playerSelect.appendChild(opt);
-                });
-            }
-        }
-
-        function addTradePlayer(side) {
-            const teamName = document.getElementById(`team${side}Select`).value;
-            const playerIdx = document.getElementById(`player${side}Select`).value;
-
-            if (teamName && playerIdx !== "") {
-                const player = rostersData[teamName][playerIdx];
-                const targetList = side === 'A' ? selectedTradeA : selectedTradeB;
-
-                if (!targetList.some(p => p.name === player.name)) {
-                    targetList.push(player);
-                    renderTradeList(side);
-                }
-            }
-            document.getElementById(`player${side}Select`).value = "";
-        }
-
-        function removeTradePlayer(side, index) {
-            if (side === 'A') selectedTradeA.splice(index, 1);
-            else selectedTradeB.splice(index, 1);
-            renderTradeList(side);
-        }
-
-        function renderTradeList(side) {
-            const container = document.getElementById(`tradeList${side}`);
-            const list = side === 'A' ? selectedTradeA : selectedTradeB;
-
-            if (list.length === 0) {
-                container.innerHTML = '<div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>';
-            } else {
-                container.innerHTML = list.map((p, i) => {
-                    const dot = roleDots[p.pos] || '';
-                    return `
-                        <div class="trade-item">
-                            <span>${dot} <strong>${p.name}</strong> (${p.fvm} FVM)</span>
-                            <button class="btn-remove" onclick="removeTradePlayer('${side}', ${i})">Rimuovi</button>
-                        </div>
-                    `;
-                }).join('');
-            }
-            updateTradeSummary();
-        }
-
-        function updateTradeSummary() {
-            const sumA = selectedTradeA.reduce((sum, p) => sum + p.fvm, 0);
-            const sumB = selectedTradeB.reduce((sum, p) => sum + p.fvm, 0);
-
-            document.getElementById('totalFVMA').innerText = sumA;
-            document.getElementById('totalFVMB').innerText = sumB;
-
-            const balanceDiv = document.getElementById('tradeBalance');
-
-            if (selectedTradeA.length === 0 && selectedTradeB.length === 0) {
-                balanceDiv.innerText = '';
-                balanceDiv.className = '';
-                return;
-            }
-
-            const maxVal = Math.max(sumA, sumB);
-            const diff = Math.abs(sumA - sumB);
-            
-            const percDiff = maxVal > 0 ? Math.round((diff / maxVal) * 100) : 0;
-            const maxAllowedDiff = Math.round(maxVal * 0.30);
-
-            if (percDiff <= 30) {
-                balanceDiv.className = 'balance-status status-valid';
-                balanceDiv.innerHTML = `👍 Scambio REGOLARE (Differenza: ${diff} FVM, pari al ${percDiff}% | Max consentito: 30%, ovvero ${maxAllowedDiff} FVM)`;
-            } else {
-                balanceDiv.className = 'balance-status status-invalid';
-                balanceDiv.innerHTML = `⚠️ Scambio NON VALIDO! La differenza è di ${diff} FVM (${percDiff}%), ma il massimo consentito è del 30% (${maxAllowedDiff} FVM).`;
-            }
-        }
-
-        // Init
-        initRosterSelect();
-        renderRosters();
-        initTradeSelects();
-    </script>
+      if (logoPath) {
+        logoImg.src = logoPath;
+        logoImg.style.display = 'block';
+      }
+    }
+  </script>
 </body>
 </html>
