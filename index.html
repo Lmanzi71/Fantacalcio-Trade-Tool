@@ -330,47 +330,54 @@
 
     <!-- SEZIONE 2: TOOL SCAMBIO -->
     <div id="tradeView" class="view-section">
-        <div class="trade-container">
-            <!-- Squadra A -->
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; height: 65px;">
-  <img id="logoA" src="" style="height: 100%; width: auto; max-width: 65px; border-radius: 50%; object-fit: contain; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-  <h2 style="margin: 0; font-size: 1.4rem; white-space: nowrap;">Squadra A</h2>
-</div>
-                <div class="selector-group">
-                    <label>Seleziona Squadra A:</label>
-                    <select id="teamASelect" onchange="loadTeamPlayers('A')" style="width: 100%;"></select>
-                </div>
-                <div class="selector-group">
-                    <label>Aggiungi Giocatore di Squadra A nello scambio:</label>
-                    <select id="playerASelect" onchange="addTradePlayer('A')" style="width: 100%;">
-                        <option value="">-- Seleziona Giocatore --</option>
-                    </select>
-                </div>
-                <div class="trade-list" id="tradeListA">
-                    <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
-                </div>
-            </div>
+<!-- CONTENITORE PRINCIPALE A DUE COLONNE -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
 
-            <!-- Squadra B -->
-           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; height: 65px;">
-  <img id="logoB" src="" style="height: 100%; width: auto; max-width: 65px; border-radius: 50%; object-fit: contain; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-  <h2 style="margin: 0; font-size: 1.4rem; white-space: nowrap;">Squadra B</h2>
-</div>
-                <div class="selector-group">
-                    <label>Seleziona Squadra B:</label>
-                    <select id="teamBSelect" onchange="loadTeamPlayers('B')" style="width: 100%;"></select>
-                </div>
-                <div class="selector-group">
-                    <label>Aggiungi Giocatore di Squadra B nello scambio:</label>
-                    <select id="playerBSelect" onchange="addTradePlayer('B')" style="width: 100%;">
-                        <option value="">-- Seleziona Giocatore --</option>
-                    </select>
-                </div>
-                <div class="trade-list" id="tradeListB">
-                    <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
-                </div>
-            </div>
+      <!-- COLONNA SQUADRA A -->
+      <div class="trade-box">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; height: 65px;">
+          <img id="logoA" src="" style="height: 100%; width: auto; max-width: 65px; border-radius: 50%; object-fit: contain; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+          <h2 style="margin: 0; font-size: 1.4rem; white-space: nowrap;">Squadra A</h2>
         </div>
+        
+        <div class="selector-group">
+          <label>Seleziona Squadra A:</label>
+          <select id="teamASelect" onchange="loadTeamPlayers('A')" style="width: 100%;"></select>
+        </div>
+        <div class="selector-group">
+          <label>Aggiungi Giocatore di Squadra A nello scambio:</label>
+          <select id="playerASelect" onchange="addTradePlayer('A')" style="width: 100%;">
+            <option value="">-- Seleziona Giocatore --</option>
+          </select>
+        </div>
+        <div class="trade-list" id="tradeListA">
+          <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
+        </div>
+      </div>
+
+      <!-- COLONNA SQUADRA B -->
+      <div class="trade-box">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; height: 65px;">
+          <img id="logoB" src="" style="height: 100%; width: auto; max-width: 65px; border-radius: 50%; object-fit: contain; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+          <h2 style="margin: 0; font-size: 1.4rem; white-space: nowrap;">Squadra B</h2>
+        </div>
+        
+        <div class="selector-group">
+          <label>Seleziona Squadra B:</label>
+          <select id="teamBSelect" onchange="loadTeamPlayers('B')" style="width: 100%;"></select>
+        </div>
+        <div class="selector-group">
+          <label>Aggiungi Giocatore di Squadra B nello scambio:</label>
+          <select id="playerBSelect" onchange="addTradePlayer('B')" style="width: 100%;">
+            <option value="">-- Seleziona Giocatore --</option>
+          </select>
+        </div>
+        <div class="trade-list" id="tradeListB">
+          <div style="color: var(--text-muted); text-align: center; margin-top: 45px; font-size: 13px;">Nessun giocatore selezionato</div>
+        </div>
+      </div>
+
+    </div>
 
         <div class="summary-bar">
             <h3>Riepilogo Scambio</h3>
