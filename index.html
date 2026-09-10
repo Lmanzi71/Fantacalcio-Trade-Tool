@@ -536,13 +536,27 @@
   const teamName = document.getElementById(`team${side}Select`).value;
 
   // --- INIZIO CODICE STEMMI ---
- const stemmiSquadre = {
+const stemmiSquadre = {
+    // Mignottingham Forest (tutte le varianti)
     "mignottingamm forest": "mignottingham.jpeg",
     "mignottingham forest": "mignottingham.jpeg",
-    "royale equipe": "royale.jpeg",
-    "cogito ergo sum": "cogito.jpeg",
+    "mignottingham": "mignottingham.jpeg",
+    "mignottingamm": "mignottingham.jpeg",
+
+    // Bouc d'hercule (tutti i tipi di apostrofo e spazi)
     "bouc d'hercule": "bouc.jpeg",
     "bouc d’hercule": "bouc.jpeg",
+    "bouc d’ hercule": "bouc.jpeg",
+    "bouc d' hercule": "bouc.jpeg",
+    "bouc": "bouc.jpeg",
+
+    // Royale Equipe (con e senza accento)
+    "royale equipe": "royale.jpeg",
+    "royale équipe": "royale.jpeg",
+    "royale": "royale.jpeg",
+
+    // Altre squadre
+    "cogito ergo sum": "cogito.jpeg",
     "temptation haaland": "temptation.jpeg",
     "herta baccaio": "herta.jpeg",
     "disparis snai germain": "disparis.jpeg",
@@ -554,11 +568,10 @@
 
   const imgElem = document.getElementById(`logo${side}`);
   if (imgElem) {
-    // Normalizza il nome rimuovendo spazi extra e convertendo in minuscolo
-    const key = teamName ? teamName.toLowerCase().trim() : "";
+    // Normalizza il testo rimuovendo caratteri speciali/spazi
+    const key = teamName ? teamName.toLowerCase().trim().replace(/\s+/g, ' ') : "";
     
     if (stemmiSquadre[key]) {
-      // Forza il ricaricamento del percorso corretto
       imgElem.src = "./" + stemmiSquadre[key];
       imgElem.style.display = 'block';
     } else {
