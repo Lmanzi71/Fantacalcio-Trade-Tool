@@ -537,17 +537,30 @@
 
   // --- INIZIO CODICE STEMMI ---
   const stemmiSquadre = {
-    "Mignottingamm forest": "mignottingham.jpeg",
-    "Royale equipe": "royale.jpeg",
-    "Cogito ergo sum": "cogito.jpeg",
-    "Bouc d'hercule": "bouc.jpeg",
-    "Temptation Haaland": "temptation.jpeg",
-    "Herta Baccaio": "herta.jpeg",
-    "Disparis snai germain": "disparis.jpeg",
-    "Sparapizza FC": "sparapizza.jpeg",
-    "Bollitones": "bollitones.jpeg",
-    "Il Calcio": "ilcalcio.jpeg"
+    "mignottingamm forest": "mignottingham.jpeg",
+    "royale equipe": "royale.jpeg",
+    "cogito ergo sum": "cogito.jpeg",
+    "bouc d'hercule": "bouc.jpeg",
+    "temptation haaland": "temptation.jpeg",
+    "herta baccaio": "herta.jpeg",
+    "disparis snai germain": "disparis.jpeg",
+    "sparapizza fc": "sparapizza.jpeg",
+    "sparapizza": "sparapizza.jpeg",
+    "bollitones": "bollitones.jpeg",
+    "il calcio": "ilcalcio.jpeg"
   };
+
+  const imgElem = document.getElementById(`logo${side}`);
+  if (imgElem) {
+    // Trasforma il nome in minuscolo per evitare errori di battitura
+    const key = teamName ? teamName.toLowerCase().trim() : "";
+    if (stemmiSquadre[key]) {
+      imgElem.src = stemmiSquadre[key];
+      imgElem.style.display = 'block';
+    } else {
+      imgElem.style.display = 'none';
+    }
+  }
 
   const imgElem = document.getElementById(`logo${side}`);
   if (imgElem) {
