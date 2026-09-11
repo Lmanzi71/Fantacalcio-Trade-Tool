@@ -476,15 +476,49 @@
         let selectedTradeA = [];
         let selectedTradeB = [];
 
-        function switchView(viewName) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            if (viewName === 'rosters') {
-                document.getElementById('rostersView').classList.add('active');
-            } else {
-                document.getElementById('tradeView').classList.add('active');
-            }
-        }
+function switchView(viewName) {
+  // Nasconde tutte le sezioni
+  const views = document.querySelectorAll('.view-section');
+  views.forEach(v => v.classList.remove('active'));
 
+  const myTeam = localStorage.getItem('myFantacalcioTeam');
+  const teamFilter = document.getElementById('teamFilter');
+
+  if (viewName === 'myTeam') {
+    document.getElementById('rostersView').classList.add('active');
+    if (teamFilter && myTeam) {
+      teamFilter.value = myTeam;
+      if (typeof filterTeams === 'function') filterTeams();
+    }
+  } else if (viewName === 'rosters') {
+    document.getElementById('rostersView').classList.add('active');
+    if (teamFilter) {
+      teamFilter.value = 'ALL';
+      if (typeof filterTeams === 'function') filterTeams();
+    }
+  } else if (viewName === 'trade') {
+    document.getElementById('tradeView').classList.add('active');
+  }
+}
+// Helper per gestire lo stato dei cedibili (Mercato)
+function getTradeStatus() {
+  return JSON.parse(localStorage.getItem('fantacalcio_trade_status')) || {};
+}
+
+function togglePlayerTrade(playerName, teamName) {
+  const currentTeam = localStorage.getItem('myFantacalcioTeam');
+  
+  if (currentTeam !== teamName) {
+    alert("Puoi modificare la lista cedibili solo per la tua squadra!");
+    return;
+  }
+
+  const tradeStatus = getTradeStatus();
+  tradeStatus[playerName] = !tradeStatus[playerName];
+  
+  localStorage.setItem('fantacalcio_trade_status', JSON.stringify(tradeStatus));
+  renderRosters();
+}
         // --- ROSE LOGIC ---
         function initRosterSelect() {
             const select = document.getElementById('teamFilter');
@@ -500,7 +534,8 @@
             const container = document.getElementById('teamsContainer');
             container.innerHTML = '';
             const teamsToRender = selectedTeam === 'ALL' ? Object.keys(rostersData) : [selectedTeam];
-
+const myTeam = localStorage.getItem('myFantacalcioTeam');
+  const tradeStatus = getTradeStatus();
             teamsToRender.forEach(team => {
                 const players = rostersData[team];
                 const card = document.createElement('div');
@@ -519,12 +554,22 @@
                             <div class="role-section">
                                 <span class="role-title role-${role}">${roleLabels[role]} (${rolePlayers.length})</span>
                                 <ul class="player-list">
-                                    ${rolePlayers.map(p => `
-                                        <li class="player-item">
-                                            <span>${p.name}</span>
-                                            <span class="player-fvm">${p.fvm} FVM</span>
-                                        </li>
-                                    `).join('')}
+${rolePlayers.map(p => {
+            const isTradeable = tradeStatus[p.name] || false;
+            const isOwner = (myTeam === team);
+            let badge = '';
+            if (isOwner) {
+              badge = `<span onclick="togglePlayerTrade('${p.name}', '${team}')" style="cursor:pointer; margin-left:6px;" title="Clicca per mettere/togliere dal mercato">${isTradeable ? '🟡' : '⚪'}</span>`;
+            } else if (isTradeable) {
+              badge = `<span style="margin-left:6px;" title="Disponibile allo scambio">🟡</span>`;
+            }
+            return `
+              <li class="player-item">
+                <span>${p.name}${badge}</span>
+                <span class="player-fvm">${p.fvm} FVM</span>
+              </li>
+            `;
+          }).join('')}
                                 </ul>
                             </div>
                         `;
