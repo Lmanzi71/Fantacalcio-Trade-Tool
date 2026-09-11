@@ -538,7 +538,7 @@ async function togglePlayerTrade(playerName, teamName) {
       body: JSON.stringify(tradeStatus)
     });
     
-    renderRosters();
+   renderRosters(teamName);
   } catch (err) {
     alert("Errore durante il salvataggio remoto del giocatore.");
   }
@@ -555,9 +555,12 @@ async function togglePlayerTrade(playerName, teamName) {
         }
 
        async function renderRosters(selectedTeam = 'ALL') {
-            const container = document.getElementById('teamsContainer');
-            container.innerHTML = '';
-            const teamsToRender = selectedTeam === 'ALL' ? Object.keys(rostersData) : [selectedTeam];
+  const container = document.getElementById('teamsContainer');
+  const teamFilter = document.getElementById('teamFilter');
+  if (teamFilter) teamFilter.value = selectedTeam;
+
+  container.innerHTML = '';
+  const teamsToRender = selectedTeam === 'ALL' ? Object.keys(rostersData) : [selectedTeam];
 const myTeam = localStorage.getItem('myFantacalcioTeam');
   const tradeStatus = await getTradeStatus();
             teamsToRender.forEach(team => {
