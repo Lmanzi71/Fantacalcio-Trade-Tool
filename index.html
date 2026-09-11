@@ -500,24 +500,48 @@ function switchView(viewName) {
     document.getElementById('tradeView').classList.add('active');
   }
 }
-// Helper per gestire lo stato dei cedibili (Mercato)
-function getTradeStatus() {
-  return JSON.parse(localStorage.getItem('fantacalcio_trade_status')) || {};
+const JSONBIN_BIN_ID = '6aa4832bac6210605ac27d13';
+const JSONBIN_API_KEY = '$2a$10$Lw9UlMkB9PpMrAj9h/M8QOGXvVQ.pIqq/mg9X2apOQ5k2r0i9.Z1y';
+
+// Scarica lo stato del mercato dal server remoto
+async function getTradeStatus() {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_API_KEY }
+    });
+    const data = await res.json();
+    return data.record || {};
+  } catch (err) {
+    console.error("Errore nel caricamento del mercato:", err);
+    return {};
+  }
 }
 
-function togglePlayerTrade(playerName, teamName) {
+// Aggiorna lo stato del giocatore sul server remoto
+async function togglePlayerTrade(playerName, teamName) {
   const currentTeam = localStorage.getItem('myFantacalcioTeam');
-  
   if (currentTeam !== teamName) {
-    alert("Puoi modificare la lista cedibili solo per la tua squadra!");
+    alert("Puoi modificare i cedibili solo per la tua squadra!");
     return;
   }
 
-  const tradeStatus = getTradeStatus();
+  const tradeStatus = await getTradeStatus();
   tradeStatus[playerName] = !tradeStatus[playerName];
-  
-  localStorage.setItem('fantacalcio_trade_status', JSON.stringify(tradeStatus));
-  renderRosters();
+
+  try {
+    await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_API_KEY
+      },
+      body: JSON.stringify(tradeStatus)
+    });
+    
+    renderRosters();
+  } catch (err) {
+    alert("Errore durante il salvataggio remoto del giocatore.");
+  }
 }
         // --- ROSE LOGIC ---
         function initRosterSelect() {
@@ -530,12 +554,12 @@ function togglePlayerTrade(playerName, teamName) {
             });
         }
 
-        function renderRosters(selectedTeam = 'ALL') {
+       async function renderRosters(selectedTeam = 'ALL') {
             const container = document.getElementById('teamsContainer');
             container.innerHTML = '';
             const teamsToRender = selectedTeam === 'ALL' ? Object.keys(rostersData) : [selectedTeam];
 const myTeam = localStorage.getItem('myFantacalcioTeam');
-  const tradeStatus = getTradeStatus();
+  const tradeStatus = await getTradeStatus();
             teamsToRender.forEach(team => {
                 const players = rostersData[team];
                 const card = document.createElement('div');
