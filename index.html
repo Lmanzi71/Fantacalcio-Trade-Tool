@@ -306,15 +306,31 @@
     </style>
 </head>
 <body>
-
+<!-- SCHERMATA SELEZIONE SQUADRA INIZIALE -->
+<div id="welcomeView" style="display: block; text-align: center; padding: 50px 20px; max-width: 500px; margin: 40px auto; background: var(--card-bg, #1e293b); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+  <h2 style="margin-bottom: 10px;">Benvenuto nel Tool Fantacalcio!</h2>
+  <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Seleziona la tua squadra per accedere al tuo pannello personalizzato:</p>
+  
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+    <select id="userTeamSelect" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #334155;">
+      <option value="">-- Scegli la tua Squadra --</option>
+    </select>
+    
+    <button onclick="confirmUserTeam()" style="padding: 12px 24px; font-size: 15px; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; border: none; font-weight: bold; transition: 0.2s;">
+      Entra nel Tool
+    </button>
+  </div>
+</div>
+    <div id="mainContent" style="display: none;">
     <header>
         <h1>Cenacolo Culturale Tool Scambi</h1>
         <div>
             <label for="viewSelector" style="font-size:13px; font-weight: 500; margin-right: 8px; color: var(--text-muted);">Modalità:</label>
             <select id="viewSelector" onchange="switchView(this.value)">
-                <option value="rosters">📋 Consultazione Rose</option>
-                <option value="trade">🔄 Tool di Scambio</option>
-            </select>
+  <option value="myTeam">📌 La Mia Rosa</option>
+  <option value="rosters">📋 Consultazione Rose</option>
+  <option value="trade">🔄 Tool di Scambio</option>
+</select>
         </div>
     </header>
 
@@ -388,6 +404,7 @@
             <div id="tradeBalance"></div>
         </div>
     </div>
+        </div>
 
     <script>
         const rostersData = {
@@ -672,11 +689,57 @@ function loadTeamPlayers(side) {
                 balanceDiv.innerHTML = `⚠️ Scambio NON VALIDO! La differenza è di ${diff} FVM (${percDiff}%), ma il massimo consentito è del 30% (${maxAllowedDiff} FVM).`;
             }
         }
+// Funzioni Login / Selezione Squadra
+document.addEventListener("DOMContentLoaded", () => {
+  const userSelect = document.getElementById('userTeamSelect');
+  if (userSelect && typeof rostersData !== 'undefined') {
+    userSelect.innerHTML = '<option value="">-- Scegli la tua Squadra --</option>';
+    Object.keys(rostersData).forEach(team => {
+      const opt = document.createElement('option');
+      opt.value = team;
+      opt.innerText = team;
+      userSelect.appendChild(opt);
+    });
+  }
 
-        // Init
-        initRosterSelect(); 
-        renderRosters();
-        initTradeSelects();
+  const savedTeam = localStorage.getItem('myFantacalcioTeam');
+  if (savedTeam) {
+    showAppViews(savedTeam);
+  }
+});
+
+function confirmUserTeam() {
+  const selectedTeam = document.getElementById('userTeamSelect').value;
+  if (!selectedTeam) {
+    alert("Seleziona una squadra per continuare!");
+    return;
+  }
+  localStorage.setItem('myFantacalcioTeam', selectedTeam);
+  showAppViews(selectedTeam);
+}
+
+function showAppViews(teamName) {
+  document.getElementById('welcomeView').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+
+  const viewSelector = document.getElementById('viewSelector');
+  if (viewSelector) {
+    viewSelector.value = 'myTeam';
+  }
+
+  const teamFilter = document.getElementById('teamFilter');
+  if (teamFilter) {
+    teamFilter.value = teamName;
+    if (typeof filterTeams === 'function') {
+      filterTeams();
+    }
+  }
+}
+
+// Init
+initRosterSelect();
+renderRosters();
+initTradeSelects();
     </script>
 </body>
 </html>
